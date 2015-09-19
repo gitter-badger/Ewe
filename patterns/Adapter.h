@@ -1,0 +1,5 @@
+namespace patterns {
+
+  class Adapter;
+
+}
