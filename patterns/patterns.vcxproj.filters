@@ -1,48 +1,72 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Файлы исходного кода">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="creational">
+      <UniqueIdentifier>{fb89f7b1-cd2f-4058-8941-bb47ce8e705a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Заголовочные файлы">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    <Filter Include="structural">
+      <UniqueIdentifier>{b9e4b738-379e-4f4a-9af7-cd4622292dc7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Файлы ресурсов">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="behavioral">
+      <UniqueIdentifier>{7633636e-b826-4283-a944-f2b6178f2b5f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Command.h">
-      <Filter>Заголовочные файлы</Filter>
+    <ClInclude Include="Builder.h">
+      <Filter>creational</Filter>
     </ClInclude>
-    <ClInclude Include="Observer.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
-    <ClInclude Include="Flyweight.h">
-      <Filter>Заголовочные файлы</Filter>
+    <ClInclude Include="Factory.h">
+      <Filter>creational</Filter>
     </ClInclude>
     <ClInclude Include="Prototype.h">
-      <Filter>Заголовочные файлы</Filter>
+      <Filter>creational</Filter>
     </ClInclude>
     <ClInclude Include="Singleton.h">
-      <Filter>Заголовочные файлы</Filter>
+      <Filter>creational</Filter>
     </ClInclude>
-    <ClInclude Include="State.h">
-      <Filter>Заголовочные файлы</Filter>
+    <ClInclude Include="Adapter.h">
+      <Filter>structural</Filter>
     </ClInclude>
     <ClInclude Include="Decorator.h">
-      <Filter>Заголовочные файлы</Filter>
+      <Filter>structural</Filter>
+    </ClInclude>
+    <ClInclude Include="Flyweight.h">
+      <Filter>structural</Filter>
+    </ClInclude>
+    <ClInclude Include="Bridge.h">
+      <Filter>structural</Filter>
+    </ClInclude>
+    <ClInclude Include="Composite.h">
+      <Filter>structural</Filter>
+    </ClInclude>
+    <ClInclude Include="Facade.h">
+      <Filter>structural</Filter>
+    </ClInclude>
+    <ClInclude Include="Proxy.h">
+      <Filter>structural</Filter>
+    </ClInclude>
+    <ClInclude Include="Command.h">
+      <Filter>behavioral</Filter>
+    </ClInclude>
+    <ClInclude Include="Memento.h">
+      <Filter>behavioral</Filter>
+    </ClInclude>
+    <ClInclude Include="Observer.h">
+      <Filter>behavioral</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>behavioral</Filter>
+    </ClInclude>
+    <ClInclude Include="Strategy.h">
+      <Filter>behavioral</Filter>
+    </ClInclude>
+    <ClInclude Include="Visitor.h">
+      <Filter>behavioral</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Singleton.cpp">
-      <Filter>Файлы исходного кода</Filter>
+      <Filter>creational</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

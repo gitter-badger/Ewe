@@ -73,16 +73,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
+    <ClInclude Include="Adapter.h" />
+    <ClInclude Include="Bridge.h" />
+    <ClInclude Include="Builder.h" />
     <ClInclude Include="Command.h" />
+    <ClInclude Include="Composite.h" />
     <ClInclude Include="Decorator.h" />
+    <ClInclude Include="Facade.h" />
+    <ClInclude Include="Factory.h" />
     <ClInclude Include="Flyweight.h" />
+    <ClInclude Include="Memento.h" />
     <ClInclude Include="Observer.h" />
     <ClInclude Include="Prototype.h" />
+    <ClInclude Include="Proxy.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="State.h" />
+    <ClInclude Include="Strategy.h" />
+    <ClInclude Include="Visitor.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Singleton.cpp" />
