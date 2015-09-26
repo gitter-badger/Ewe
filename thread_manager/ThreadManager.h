@@ -1,44 +1,39 @@
 #include <vector>
-#include <queue>
 #include <memory>
 #include <thread>
+#include <algorithm>
+
+#include <Command.h>
 
 namespace thread_manager {
-  using std::vector;
-  using std::queue;
-  using std::shared_ptr;
-  using std::thread;
-  using std::for_each;
 
-  class ThreadSubject;
+using std::vector;
+using std::shared_ptr;
+using std::make_shared;
+using std::thread;
+using std::for_each;
 
-  class ThreadCommand: public MethodExecuteCommand<ThreadSubject> {
-  private:
-    void (ThreadSubject:: *KillMethod) ();
-    shared_ptr<KillMethod> remove_;
-  public:
-    ThreadCommand (shared_ptr<ThreadSubject> s, shared_ptr<Action> a, shared_ptr<KillMethod> k)
-      : remove_(k) { this->MethodExecuteCommand(s, a); }
-  };
+using patterns::MethodExecuteCommand;
+using patterns::Command;
 
-  /**
-    логика такая: приходят команды запустить воркеров графики логики и прочего.
-    запускаем в потоках, храним их вектор
-    когда приходит команда синхронизироваться, синхронизируемся.
-    но при этом должны еще как то завершаться эти потоки.
-    надо придумать как в ThreadSubject реализовать механизм информирования потоков, что им надо завершаться.
-    внешне это будет выглядеть как "завершись", и то же самое будет делаться в деструкторе менеджера.
-    надо подумать, как потоки будут взаимодействовать.
-    нужно прокинуть зависимости между проектами
-  */
+class ThreadSubject {
+public:
+  virtual void stop() = 0;
+  virtual void start() = 0;
+};
 
-  class ThreadManager {
-  private:
-    vector<ThreadCommand> threads;
-  public:
-    void start() {
-      for_each(threads.begin, threads.end, [] (ThreadCommand tc) { tc.execute(); });
-    };
-    void stop();
-  };
+class ThreadCommand : public MethodExecuteCommand<ThreadSubject> {
+public:
+  ThreadCommand(shared_ptr<ThreadSubject> s)
+    : MethodExecuteCommand<ThreadSubject>(s, &ThreadSubject::start) {};
+  void stop();
+};
+
+class ThreadManager {
+private:
+  vector<ThreadCommand> threads;
+public:
+  void start();
+  void stop();
+};
 }
