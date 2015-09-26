@@ -15,7 +15,7 @@ namespace patterns {
 
   template<class Subject, typename... Args>
   class MethodExecuteCommand : public Command<typename... Args> {
-  private:
+  protected:
     void (Subject:: *Action) (Args...);
 
     shared_ptr<Subject> subject_;
