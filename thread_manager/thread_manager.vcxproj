@@ -75,6 +75,17 @@
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ThreadManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\patterns\patterns.vcxproj">
+      <Project>{22d3f2ad-2549-4035-9e3a-851b3bdb2bda}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\utils\utils.vcxproj">
+      <Project>{79c9b209-4765-4cce-baa6-d6d8bb073d3f}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
