@@ -7,7 +7,6 @@ using std::shared_ptr;
 template<typename... Args>
 class Command {
 protected:
-  Command();
   virtual ~Command() = 0;
 public:
   //If you will know args count : const unsigned numargs = sizeof...(Args);

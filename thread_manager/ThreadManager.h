@@ -28,6 +28,7 @@ private:
   vector<ThreadCommand> threads_;
   vector<thread> threads__;
 public:
+  void add(const ThreadCommand&);
   void start();
   void stop();
 };

@@ -38,7 +38,10 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>E:\projects\try\Ewe\utils;E:\projects\try\Ewe\thread_manager;E:\projects\try\Ewe\patterns;E:\projects\try\Ewe\graphic;E:\projects\try\Ewe\logic;E:\projects\try\Ewe\io;E:\projects\try\Ewe\sound;$(IncludePath)</IncludePath>
+    <LibraryPath>E:\projects\try\Ewe\Debug;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
