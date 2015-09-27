@@ -21,17 +21,17 @@ public:
 
 class ThreadCommand : public patterns::MethodExecuteCommand<ThreadSubject> {
 public:
-  ThreadCommand(shared_ptr<ThreadSubject> s)
+  ThreadCommand(ThreadSubject* s)
     : MethodExecuteCommand<ThreadSubject>(s, &ThreadSubject::start) {};
   void stop();
 };
 
 class ThreadManager {
 private:
-  vector<ThreadCommand> threads_;
+  vector<ThreadCommand*> threads_;
   vector<thread> threads__;
 public:
-  void add(const ThreadCommand&);
+  void add(ThreadCommand *);
   void start();
   void stop();
 };

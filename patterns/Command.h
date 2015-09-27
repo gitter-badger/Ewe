@@ -1,35 +1,31 @@
 #ifndef COMMAND_H_
 #define COMMAND_H_
 
-#include <memory>
-
 namespace patterns {
 
-using std::shared_ptr;
-
-template<typename... Args>
 class Command {
-protected:
-  virtual ~Command() = 0;
 public:
-  //If you will know args count : const unsigned numargs = sizeof...(Args);
-  virtual void execute(Args...) = 0;
+  virtual void execute() = 0;
 };
 
-template<class Subject, typename... Args>
-class MethodExecuteCommand : public Command <Args...> {
+template<class Subject>
+class MethodExecuteCommand : public Command {
 protected:
-  typedef void (Subject:: *Action) (Args...);
+  using Action = void (Subject:: *) ();
 
-  shared_ptr<Subject> subject_;
+  Subject* subject_;
   Action action_;
 public:
-  MethodExecuteCommand(shared_ptr<Subject> s, Action a)
-    : subject_(s) { action_ = a; };
+  MethodExecuteCommand(Subject* s, Action a)
+    : subject_(s) { action_ = a; }
 
-  void exectute(Args... aa) {
-    this->subject_ ->* this->action_(aa...);
-  };
+  ~MethodExecuteCommand() {
+    subject_ = nullptr;
+  }
+
+  virtual void execute() {
+    this->subject_ ->* this->action_();
+  }
 };
 
 }
