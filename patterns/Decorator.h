@@ -1,3 +1,6 @@
+#ifndef DECORATOR_H_
+#define DECORATOR_H_
+
 namespace patterns {
 
   template<class T>
@@ -9,3 +12,5 @@ namespace patterns {
   };
 
 }
+
+#endif // DECORATOR_H_

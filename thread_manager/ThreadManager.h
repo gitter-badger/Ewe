@@ -1,3 +1,6 @@
+#ifndef THREAD_MANAGER_H_
+#define THREAD_MANAGER_H_
+
 #include <vector>
 #include <memory>
 #include <thread>
@@ -34,3 +37,5 @@ public:
 };
 
 }
+
+#endif // THREAD_MANAGER_H_

@@ -1,3 +1,6 @@
+#ifndef SINGLETON_H_
+#define SINGLETON_H_
+
 namespace patterns {
 
   class Singleton;
@@ -25,3 +28,5 @@ namespace patterns {
   };
 
 }
+
+#endif // SINGLETON_H_

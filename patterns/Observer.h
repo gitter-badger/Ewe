@@ -1,3 +1,6 @@
+#ifndef OBSERVER_H_
+#define OBSERVER_H_
+
 #include <vector>
 #include <memory>
 
@@ -20,3 +23,5 @@ namespace patterns {
   };
 
 }
+
+#endif // OBSERVER_H_

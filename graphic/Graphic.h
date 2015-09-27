@@ -1,3 +1,6 @@
+#ifndef GRAPHIC_H_
+#define GRAPHIC_H_
+
 #include <ThreadManager.h>
 
 namespace graphic {
@@ -9,3 +12,5 @@ public:
 };
 
 }
+
+#endif // GRAPHIC_H_

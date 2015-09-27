@@ -1,3 +1,6 @@
+#ifndef COMMAND_H_
+#define COMMAND_H_
+
 #include <memory>
 
 namespace patterns {
@@ -30,3 +33,5 @@ public:
 };
 
 }
+
+#endif // COMMAND_H_
