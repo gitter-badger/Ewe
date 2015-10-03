@@ -40,7 +40,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>E:\projects\try\Ewe\utils;E:\projects\try\Ewe\thread_manager;E:\projects\try\Ewe\patterns;$(IncludePath)</IncludePath>
+    <IncludePath>E:\projects\try\Ewe\utils;E:\projects\try\Ewe\data;E:\projects\try\Ewe\thread_manager;E:\projects\try\Ewe\patterns;$(IncludePath)</IncludePath>
     <LibraryPath>E:\projects\try\Ewe\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -80,9 +80,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Graphic.h" />
+    <ClInclude Include="GraphicInformer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Graphic.cpp" />
+    <ClCompile Include="GraphicInformer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
