@@ -2,16 +2,9 @@
 #define THREAD_MANAGER_H_
 
 #include <vector>
-#include <memory>
 #include <thread>
 
-#include <Command.h>
-
 namespace thread_manager {
-
-using std::vector;
-using std::shared_ptr;
-using std::thread;
 
 class ThreadSubject {
 public:
@@ -19,19 +12,12 @@ public:
   virtual void start() = 0;
 };
 
-class ThreadCommand : public patterns::MethodExecuteCommand<ThreadSubject> {
-public:
-  ThreadCommand(ThreadSubject* s)
-    : MethodExecuteCommand<ThreadSubject>(s, &ThreadSubject::start) {};
-  void stop();
-};
-
 class ThreadManager {
 private:
-  vector<ThreadCommand*> threads_;
-  vector<thread> threads__;
+  std::vector<ThreadSubject*> commands_;
+  std::vector<std::thread> threads_;
 public:
-  void add(ThreadCommand *);
+  void add(ThreadSubject *);
   void start();
   void stop();
 };

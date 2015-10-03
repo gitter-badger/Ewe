@@ -5,24 +5,20 @@
 using std::make_shared;
 using std::for_each;
 
-void thread_manager::ThreadCommand::stop() {
-  subject_->stop();
-}
-
-void thread_manager::ThreadManager::add(ThreadCommand * tc) {
-  threads_.push_back(tc);
+void thread_manager::ThreadManager::add(ThreadSubject * tc) {
+  commands_.push_back(tc);
 }
 
 void thread_manager::ThreadManager::start() {
-  for_each(threads_.begin(), threads_.end(), [&] (ThreadCommand* tc) { 
-    threads__.push_back(thread([&tc] () { tc->execute(); }));
+  for_each(commands_.begin(), commands_.end(), [&] (ThreadSubject * tc) {
+    threads_.push_back(std::thread([&tc] () { tc->start(); }));
   });
 }
 
 void thread_manager::ThreadManager::stop() {
-  for_each(threads_.begin(), threads_.end(), [] (ThreadCommand* tc) { tc->stop(); });
-  threads_.clear();
+  for_each(commands_.begin(), commands_.end(), [] (ThreadSubject * tc) { tc->stop(); });
+  commands_.clear();
 
-  for_each(threads__.begin(), threads__.end(), [] (thread& t) { t.join(); });
-  threads__.clear();
+  for_each(threads_.begin(), threads_.end(), [] (std::thread& t) { t.join(); });
+  threads_.clear();
 }
