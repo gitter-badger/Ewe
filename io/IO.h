@@ -5,10 +5,10 @@
 
 namespace io {
 
-using thread_manager::ThreadSubject;
-
-class IO : public ThreadSubject {
-
+class IO : public thread_manager::ThreadSubject {
+public:
+  void stop();
+  void start();
 };
 
 }
