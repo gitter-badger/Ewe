@@ -23,8 +23,8 @@ public:
     subject_ = nullptr;
   }
 
-  virtual void execute() {
-    this->subject_ ->* this->action_();
+  void execute() {
+    (this->subject_ ->* this->action_)();
   }
 };
 

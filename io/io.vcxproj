@@ -40,8 +40,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>E:\projects\try\Ewe\data;E:\projects\try\Ewe\utils;E:\projects\try\Ewe\thread_manager;E:\projects\try\Ewe\patterns;$(IncludePath)</IncludePath>
-    <LibraryPath>E:\projects\try\Ewe\Debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\data;..\utils;..\thread_manager;..\patterns;$(IncludePath)</IncludePath>
+    <LibraryPath>..\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
