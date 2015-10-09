@@ -4,6 +4,8 @@
 #include <memory>
 #include <queue>
 
+#include "Dependencies.h"
+
 #include <ThreadManager.h>
 #include <Command.h>
 #include <GraphicData.h>

@@ -1,6 +1,8 @@
 #ifndef LOGIC_H_
 #define LOGIC_H_
 
+#include "Dependencies.h"
+
 #include <ThreadManager.h>
 
 namespace logic {

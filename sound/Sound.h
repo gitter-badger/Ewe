@@ -1,6 +1,8 @@
 #ifndef SOUND_H_
 #define SOUND_H_
 
+#include "Dependencies.h"
+
 #include <ThreadManager.h>
 
 namespace sound {

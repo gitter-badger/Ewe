@@ -1,3 +1,5 @@
+#include "Dependencies.h"
+
 #include <ThreadManager.h>
 
 #include <Graphic.h>

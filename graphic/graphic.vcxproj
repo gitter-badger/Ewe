@@ -40,7 +40,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>..\utils;..\data;..\thread_manager;..\patterns;$(IncludePath)</IncludePath>
+    <IncludePath>..\utils;..\patterns;..\thread_manager;..\data;$(IncludePath)</IncludePath>
     <LibraryPath>..\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -51,7 +51,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\data;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\utils;..\patterns;..\thread_manager;..\data;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -80,12 +80,32 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Dependencies.h" />
     <ClInclude Include="Graphic.h" />
     <ClInclude Include="GraphicInformer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Graphic.cpp" />
     <ClCompile Include="GraphicInformer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\data\data.vcxproj">
+      <Project>{25fc9a18-2083-42cc-873e-8981dd641a17}</Project>
+      <Private>false</Private>
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
+    <ProjectReference Include="..\patterns\patterns.vcxproj">
+      <Project>{22d3f2ad-2549-4035-9e3a-851b3bdb2bda}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\thread_manager\thread_manager.vcxproj">
+      <Project>{800dbd80-4733-48f6-a155-0ee305ed1cf5}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\utils\utils.vcxproj">
+      <Project>{79c9b209-4765-4cce-baa6-d6d8bb073d3f}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

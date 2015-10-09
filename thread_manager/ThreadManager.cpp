@@ -2,7 +2,6 @@
 
 #include <algorithm>
 
-using std::make_shared;
 using std::for_each;
 
 void thread_manager::ThreadManager::add(ThreadSubject * tc) {
