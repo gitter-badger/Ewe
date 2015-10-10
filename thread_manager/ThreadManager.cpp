@@ -8,16 +8,15 @@ void thread_manager::ThreadManager::add(ThreadSubject * tc) {
   commands_.push_back(tc);
 }
 
-void thread_manager::ThreadManager::start() {
-  for_each(commands_.begin(), commands_.end(), [&] (ThreadSubject * tc) {
-    threads_.push_back(std::thread([&tc] () { tc->start(); }));
-  });
+void thread_manager::ThreadManager::start ( ) {
+  for (auto c : commands_)
+    threads_.push_back(std::thread([&c] () { c->start(); }));
 }
 
 void thread_manager::ThreadManager::stop() {
-  for_each(commands_.begin(), commands_.end(), [] (ThreadSubject * tc) { tc->stop(); });
-  commands_.clear();
+  for (auto& c : commands_) c->stop();
+  for (auto& t : threads_) t.join();
 
-  for_each(threads_.begin(), threads_.end(), [] (std::thread& t) { t.join(); });
+  commands_.clear();
   threads_.clear();
 }
