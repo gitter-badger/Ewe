@@ -40,7 +40,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>..\utils;..\patterns;..\thread_manager;..\data;$(IncludePath)</IncludePath>
+    <IncludePath>..\utils;..\patterns;..\thread_manager;..\data;..\command_manager;$(IncludePath)</IncludePath>
     <LibraryPath>..\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -51,7 +51,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\utils;..\patterns;..\thread_manager;..\data;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\utils;..\patterns;..\thread_manager;..\data;..\command_manager;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -87,7 +87,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Graphic.cpp" />
-    <ClCompile Include="GraphicInformer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\data\data.vcxproj">

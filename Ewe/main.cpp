@@ -22,7 +22,7 @@ int main ( ) {
 
   tm.start();
 
-  tm.stop();
+  tm.listen ( );
 
   return 0;
 }

@@ -3,7 +3,7 @@
 
 #include <memory>
 
-//#include <GraphicData.h>
+#include <GraphicData.h>
 
 #include "Dependencies.h"
 
@@ -11,7 +11,7 @@ namespace graphic {
 
   class GraphicSupport {
   protected:
-    std::shared_ptr</*data::Object*/int> getObjectByTraceRay (int, int);
+    std::shared_ptr<data::Object> getObjectByTraceRay (int, int);
   };
 
 }

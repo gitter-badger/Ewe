@@ -4,8 +4,6 @@
 
 using std::cout;
 
-void graphic::Graphic::pushTask(std::shared_ptr<GraphicTask> task) {}
-
 void graphic::Graphic::stop() {
   cout << "Graphic thread was stopped\n";
 }

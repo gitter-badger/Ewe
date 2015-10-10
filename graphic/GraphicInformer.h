@@ -9,7 +9,7 @@
 namespace graphic {
 
 class GraphicInformer : private GraphicSupport {
-public:
+
 };
 
 }
