@@ -4,17 +4,12 @@
 #include <memory>
 #include <queue>
 
-#include <GraphicData.h>
-
-#include "Graphic.h"
+#include "GraphicSupport.h"
 
 namespace graphic {
 
-class GraphicInformer : private Graphic {
+class GraphicInformer : private GraphicSupport {
 public:
-  using Graphic::getObjectByTraceRay;
-
-  GraphicInformer(const Graphic&);
 };
 
 }

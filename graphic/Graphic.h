@@ -4,11 +4,11 @@
 #include <memory>
 #include <queue>
 
-#include "Dependencies.h"
-
 #include <ThreadManager.h>
 #include <Command.h>
-#include <GraphicData.h>
+//#include <GraphicData.h>
+
+#include "GraphicSupport.h"
 
 namespace graphic {
 
@@ -16,19 +16,11 @@ class GraphicTask : public patterns::Command {
 
 };
 
-class Graphic : public thread_manager::ThreadSubject {
+class Graphic : public thread_manager::ThreadSubject, private GraphicSupport {
 private:
   std::queue<std::shared_ptr<GraphicTask>> taskQueue;
 protected:
-
-#pragma region GraphicInformer interface
-  std::shared_ptr<data::Object> getObjectByTraceRay(int, int);
-#pragma endregion
-
-#pragma region GraphicQueue interface
   void pushTask (std::shared_ptr<GraphicTask>);
-#pragma endregion
-
 public:
   void stop();
   void start();

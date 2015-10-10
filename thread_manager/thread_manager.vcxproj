@@ -80,6 +80,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Dependencies.h" />
     <ClInclude Include="ThreadManager.h" />
   </ItemGroup>
   <ItemGroup>

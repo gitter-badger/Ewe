@@ -9,6 +9,9 @@ class Object {
 public:
   space::Point position;
   space::Point scale;
+
+  Object ( );
+  ~Object ( );
 };
 
 }

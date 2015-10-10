@@ -141,6 +141,9 @@
     <ClInclude Include="GraphicData.h" />
     <ClInclude Include="Space.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Data.cpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
