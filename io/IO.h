@@ -10,6 +10,7 @@ namespace io {
 
 class IO : public thread_manager::ThreadSubject {
   graphic::GraphicInformer graphicInformer;
+  void processCommand (command_manager::Command& c);
 public:
   void stop();
   void start();

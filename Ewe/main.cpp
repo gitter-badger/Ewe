@@ -24,5 +24,11 @@ int main ( ) {
 
   tm.listen ( );
 
+  getchar ();
+
+  tm.stop ( );
+
+  getchar ();
+
   return 0;
 }

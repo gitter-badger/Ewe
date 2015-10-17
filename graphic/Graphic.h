@@ -5,20 +5,18 @@
 #include <queue>
 
 #include <ThreadManager.h>
-#include <Command.h>
 
 #include "GraphicSupport.h"
 
 namespace graphic {
 
-class GraphicTask : public patterns::Command {
-
-};
-
 class Graphic : public thread_manager::ThreadSubject, private GraphicSupport {
+  void processCommand (command_manager::Command& c);
 public:
   void stop();
   void start();
+
+  Graphic ( );
 };
 
 }

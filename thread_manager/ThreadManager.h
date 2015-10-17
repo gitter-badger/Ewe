@@ -5,21 +5,25 @@
 #include <thread>
 #include <queue>
 
-#include "CommandManager.h"
+#include <CommandManager.h>
 
 namespace thread_manager {
 
 class ThreadSubject {
-private:
+protected:
   std::queue<command_manager::Command> commands_;
   command_manager::ID id;
+  void processCommands ( );
+  virtual void processCommand (command_manager::Command& c) = 0;
+
+  bool willStop;
 public:
   std::shared_ptr<std::queue<command_manager::Command>> getQueueLink ();
   command_manager::ID getId ( );
   
   virtual void stop ( ) = 0;
   virtual void start ( ) = 0;
-
+  
   // TODO:
   //virtual void pause ( ) = 0;
   //virtual void unpause ( ) = 0;
