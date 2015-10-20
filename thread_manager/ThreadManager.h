@@ -20,6 +20,8 @@ protected:
 
   bool willStop;
 public:
+  ThreadSubject();
+
   std::shared_ptr<std::queue<command_manager::Command>> getQueueLink ();
   command_manager::ID getId ( );
   

@@ -8,6 +8,9 @@ void io::IO::processCommand (command_manager::Command& c) {
   return;
 }
 
+io::IO::IO() { 
+  id = command_manager::ID::IO;
+}
 void io::IO::stop() {
   cout << "IO thread was stopped\n";
 

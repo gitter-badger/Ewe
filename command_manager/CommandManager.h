@@ -12,21 +12,21 @@ namespace command_manager {
     LOGIC,
     SOUND,
     THREAD_MANAGER,
-    WINDOW_FACADE,
-    ALL
+    WINDOW_FACADE
   };
 
   enum CommandType {
     KILL,
     PAUSE,
     ACTION,
-    PLAY
+    PLAY,
+    INITIALIZE
   };
 
   class Command {
   public:
-    Command(ID from_, ID to_) :from(from_), to(to_) {};
-    Command(ID from_, ID to_, CommandType commandType_) :from(from_), to(to_), commandType(commandType_) {};
+    Command(ID from_, ID to_) :from(from_), to(to_) { args[0] = args[1] = args[2] = 0; };
+    Command(ID from_, ID to_, CommandType commandType_) :from(from_), to(to_), commandType(commandType_) { args[0] = args[1] = args[2] = 0; };
     ID from, to;
     CommandType commandType;
     int args [3];

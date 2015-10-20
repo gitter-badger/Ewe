@@ -4,6 +4,10 @@
 
 using std::cout;
 
+logic::Logic::Logic() {
+  id = command_manager::ID::LOGIC;
+}
+
 void logic::Logic::processCommand (command_manager::Command& c) {
   return;
 }

@@ -10,6 +10,8 @@ namespace logic {
 class Logic : public thread_manager::ThreadSubject {
   void processCommand (command_manager::Command& c);
 public:
+  Logic();
+
   void stop();
   void start();
 };

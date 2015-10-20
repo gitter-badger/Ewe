@@ -4,6 +4,10 @@
 
 using std::cout;
 
+sound::Sound::Sound() {
+  id = command_manager::ID::SOUND;
+}
+
 void sound::Sound::processCommand (command_manager::Command& c) {
   return;
 }

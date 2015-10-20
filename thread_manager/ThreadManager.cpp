@@ -1,5 +1,9 @@
 #include "ThreadManager.h"
 
+thread_manager::ThreadSubject::ThreadSubject() { 
+  this->willStop = false; 
+}
+
 void thread_manager::ThreadSubject::processCommands ( ) {
   while (this->commands_->size () > 0) {
     auto& c = this->commands_->front();

@@ -18,7 +18,7 @@ window_facade::WindowFacade* window_facade::WindowFacade::getInstance() {
   return facade;
 }
 window_facade::WindowFacade::WindowFacade() {
-  this->willStop = false;
+  id = command_manager::ID::WINDOW_FACADE;
   _name = AppName;
   _wndClassName = WndClassName;
   _width = WindowWidth;
@@ -47,13 +47,23 @@ void window_facade::WindowFacade::start() {
   getInstance()->_generateCommandProcessors();
   if (!_initialize()) {
     command_manager::Command cmd = command_manager::Command(
-      command_manager::ID::WINDOW_FACADE,
-      command_manager::ID::THREAD_MANAGER,
+      command_manager::ID::WINDOW_FACADE, command_manager::ID::THREAD_MANAGER,
       command_manager::CommandType::KILL);
     set(cmd);
     return;
   }
- 
+  command_manager::Command hwndToGraphic = command_manager::Command(
+    command_manager::ID::WINDOW_FACADE, command_manager::ID::GRAPHIC,
+    command_manager::CommandType::INITIALIZE);
+  hwndToGraphic.args[0] = reinterpret_cast<int>(_hwnd);
+  set(hwndToGraphic);
+  
+  command_manager::Command hwndToIO = command_manager::Command(
+    command_manager::ID::WINDOW_FACADE, command_manager::ID::IO,
+    command_manager::CommandType::INITIALIZE);
+  hwndToIO.args[0] = reinterpret_cast<int>(_hwnd);
+  set(hwndToIO);
+
   MSG msg_;
 
   while (!this->willStop) {

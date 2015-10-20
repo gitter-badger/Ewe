@@ -7,7 +7,7 @@
 using std::cout;
 
 graphic::Graphic::Graphic ( ) {
-  this->willStop = false;
+  id = command_manager::ID::GRAPHIC;
 }
 
 void graphic::Graphic::stop() {
