@@ -11,7 +11,9 @@ namespace thread_manager {
 
 class ThreadSubject {
 protected:
-  std::queue<command_manager::Command> commands_;
+  command_manager::CommandManager* commandManager_;
+
+  std::shared_ptr<std::queue<command_manager::Command>> commands_;
   command_manager::ID id;
   void processCommands ( );
   virtual void processCommand (command_manager::Command& c) = 0;
@@ -24,6 +26,7 @@ public:
   virtual void stop ( ) = 0;
   virtual void start ( ) = 0;
   
+  void bind(command_manager::CommandManager*);
   // TODO:
   //virtual void pause ( ) = 0;
   //virtual void unpause ( ) = 0;
@@ -35,11 +38,9 @@ private:
   std::vector<std::thread> threads_;
 
   command_manager::CommandManager commandManager_;
-  std::queue<command_manager::Command> commands_;
+  std::shared_ptr<std::queue<command_manager::Command>> commands_;
 public:
   ThreadManager ( );
-
-  void push (command_manager::Command);
 
   void add(ThreadSubject *);
   void start();

@@ -11,7 +11,9 @@ namespace command_manager {
     IO,
     LOGIC,
     SOUND,
-    THREAD_MANAGER
+    THREAD_MANAGER,
+    WINDOW_FACADE,
+    ALL
   };
 
   enum CommandType {
@@ -23,6 +25,8 @@ namespace command_manager {
 
   class Command {
   public:
+    Command(ID from_, ID to_) :from(from_), to(to_) {};
+    Command(ID from_, ID to_, CommandType commandType_) :from(from_), to(to_), commandType(commandType_) {};
     ID from, to;
     CommandType commandType;
     int args [3];

@@ -77,11 +77,9 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="TheWindow.h" />
     <ClInclude Include="WindowFacade.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="TheWindow.cpp" />
     <ClCompile Include="WindowFacade.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
