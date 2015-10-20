@@ -24,8 +24,6 @@ void io::IO::start() {
     auto a = std::chrono::milliseconds (100);
     std::this_thread::sleep_for (a);
 
-    cout << "IO thread was started\n";
-
     processCommands ();
   }
 }

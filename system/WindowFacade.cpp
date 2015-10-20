@@ -25,6 +25,7 @@ window_facade::WindowFacade::WindowFacade() {
   _height = WindowHeight;
   _hwnd = NULL;
   _fullscreen = !Windowed;
+  _minimized = false;
 }
 void window_facade::WindowFacade::set(command_manager::Command& c) {
   commandManager_->push(c);
@@ -70,8 +71,6 @@ void window_facade::WindowFacade::start() {
     auto a = std::chrono::milliseconds(100);
     std::this_thread::sleep_for(a);
 
-    cout << "WindowFacade thread working!\n";
-
     if (PeekMessage(&msg_, NULL, 0, 0, PM_REMOVE)) {
       TranslateMessage(&msg_);
       DispatchMessage(&msg_);
@@ -81,12 +80,57 @@ void window_facade::WindowFacade::start() {
 }
 void window_facade::WindowFacade::_generateCommandProcessors() {
   _commandProcessors[WM_CLOSE] = [](WPARAM	wParam, LPARAM	lParam) {
-    command_manager::Command cmd = command_manager::Command(
+    command_manager::Command commandKill = command_manager::Command(
         command_manager::ID::WINDOW_FACADE,
         command_manager::ID::THREAD_MANAGER,
         command_manager::CommandType::KILL);
-      WindowFacade::getInstance()->set(cmd);
+    WindowFacade::getInstance()->set(commandKill);
+    return true;
   };
+  _commandProcessors[WM_SIZE] = [](WPARAM	wParam, LPARAM	lParam) {
+    command_manager::Command commandResize = command_manager::Command(
+      command_manager::ID::WINDOW_FACADE,
+      command_manager::ID::GRAPHIC,
+      command_manager::CommandType::RESIZE);
+    commandResize.args[0] = LOWORD(lParam);
+    commandResize.args[1] = HIWORD(lParam);
+    WindowFacade::getInstance()->set(commandResize);
+    return true;
+  }; 
+  _commandProcessors[WM_SYSCOMMAND] = [](WPARAM	wParam, LPARAM	lParam) {
+    command_manager::Command commandActive = command_manager::Command(
+      command_manager::ID::WINDOW_FACADE,
+      command_manager::ID::THREAD_MANAGER);
+    switch (wParam)  {
+    case SC_MINIMIZE:
+      WindowFacade::getInstance()->setMinimized(true);
+      commandActive.commandType = command_manager::CommandType::PAUSE;
+      break;
+    case 1:   // Развёрнуто, этот ID я просто отловил, надо поискать дефайн к нему
+      WindowFacade::getInstance()->setMinimized(false);
+      commandActive.commandType = command_manager::CommandType::RESUME;
+      break;
+      // не уходим в сон и отдых
+    case SC_SCREENSAVE:
+    case SC_MONITORPOWER: return true;
+    default: return false;
+    }
+    WindowFacade::getInstance()->set(commandActive);
+    return false;
+  };
+  _commandProcessors[WM_ACTIVATE] = [](WPARAM	wParam, LPARAM	lParam) {
+    if (!WindowFacade::getInstance()->getMinimized()) {
+      command_manager::Command commandActive = command_manager::Command(
+        command_manager::ID::WINDOW_FACADE,
+        command_manager::ID::THREAD_MANAGER);
+      if (wParam) commandActive.commandType = command_manager::CommandType::RESUME;
+      else        commandActive.commandType = command_manager::CommandType::PAUSE;
+      WindowFacade::getInstance()->set(commandActive);
+      return true;
+    }
+    return false;
+  };
+  
 }
 bool window_facade::WindowFacade::_initialize() {
   HINSTANCE hInstance_ = GetModuleHandle(NULL);
@@ -114,8 +158,7 @@ bool window_facade::WindowFacade::_initialize() {
     auto& cp = window_facade::WindowFacade::getInstance()->_commandProcessors;
     auto& it = cp.find(uMsg);
     if (it != cp.end()) {
-      it->second(wParam, lParam);
-      return 0;
+      if(it->second(wParam, lParam)) return 0;
     }
     return DefWindowProc(hWnd, uMsg, wParam, lParam);
   };
@@ -206,4 +249,10 @@ void window_facade::WindowFacade::_shutdown() {
   if (!UnregisterClass(_wndClassName.c_str(), GetModuleHandle(NULL))) {
     //MessageBox(NULL, ErrorMessages::unregisterClass.c_str(), ErrorMessages::default.c_str(), MB_OK | MB_ICONINFORMATION);
   }
+}
+void window_facade::WindowFacade::setMinimized(bool minimized) {
+  _minimized = minimized;
+}
+bool window_facade::WindowFacade::getMinimized() {
+  return _minimized;
 }

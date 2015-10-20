@@ -18,9 +18,9 @@ namespace command_manager {
   enum CommandType {
     KILL,
     PAUSE,
-    ACTION,
-    PLAY,
-    INITIALIZE
+    RESUME,
+    INITIALIZE,
+    RESIZE
   };
 
   class Command {

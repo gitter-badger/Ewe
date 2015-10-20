@@ -13,6 +13,8 @@ namespace window_facade {
     void stop();
     void start();
     static WindowFacade* getInstance();
+    void setMinimized(bool);
+    bool getMinimized();
 
   private:
     WindowFacade();
@@ -23,7 +25,7 @@ namespace window_facade {
     bool _initialize();
     void _shutdown();
 
-    std::map<UINT, std::function<void(WPARAM, LPARAM)>> _commandProcessors;
+    std::map<UINT, std::function<bool(WPARAM, LPARAM)>> _commandProcessors;
     HWND  _hwnd;
     int   _width;
     int   _height;
@@ -31,6 +33,7 @@ namespace window_facade {
     std::string _name;
     std::string _wndClassName;
     bool _fullscreen;
+    bool _minimized;
   };
 
 }

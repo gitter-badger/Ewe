@@ -20,6 +20,10 @@ void graphic::Graphic::processCommand (command_manager::Command& c) {
   /**
    * Graphic no recieve commands
    */
+  if (c.commandType == command_manager::CommandType::INITIALIZE) cout << "Graphic init\thwnd = " << c.args[0] << "\n";
+  if (c.commandType == command_manager::CommandType::PAUSE) cout << "Graphic pause";
+  if (c.commandType == command_manager::CommandType::RESUME) cout << "Graphic resume";
+  if (c.commandType == command_manager::CommandType::RESIZE) cout << "Graphic resize\tx = " << c.args[0] << " y = " << c.args[1] << "\n";
 
   return;
 }
@@ -30,8 +34,6 @@ void graphic::Graphic::start() {
   while (!this->willStop) {
     auto a = std::chrono::milliseconds (100);
     std::this_thread::sleep_for (a);
-
-    cout << "Graphic thread was started\n";
 
     processCommands ( );
   }

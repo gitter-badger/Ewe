@@ -25,8 +25,6 @@ void sound::Sound::start() {
     auto a = std::chrono::milliseconds (100);
     std::this_thread::sleep_for (a);
 
-    cout << "Sound thread was started\n";
-
     processCommands ();
   }
 }
