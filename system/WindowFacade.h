@@ -20,6 +20,8 @@ namespace window_facade {
     WindowFacade();
     WindowFacade(WindowFacade&);
     void _generateCommandProcessors();
+    void _sendKill();
+    void _sendHwnd();
 
   private:
     bool _initialize();

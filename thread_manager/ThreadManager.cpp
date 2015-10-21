@@ -1,7 +1,8 @@
 #include "ThreadManager.h"
 
 thread_manager::ThreadSubject::ThreadSubject() { 
-  this->willStop = false; 
+  this->commands_ = std::make_shared<std::queue<command_manager::Command>>();
+  this->willStop = false;
 }
 
 void thread_manager::ThreadSubject::processCommands ( ) {
@@ -16,7 +17,6 @@ void thread_manager::ThreadSubject::bind(command_manager::CommandManager* comman
 }
 
 std::shared_ptr<std::queue<command_manager::Command>> thread_manager::ThreadSubject::getQueueLink ( ) {
-  this->commands_ = std::make_shared<std::queue<command_manager::Command>>();
   return this->commands_;
 }
 

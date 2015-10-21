@@ -4,13 +4,13 @@
 #include <iostream>
 using std::cout;
 
-static const std::string FullScreenString = "Start fullscreen?";
-static const std::string FullScreenProblemString = "FullScreen problem. Start in window?";
-static const std::string WndClassName = "windowClass";
-static const std::string AppName = "пиу-пиу";
-static const int WindowWidth = 800;
-static const int WindowHeight = 600;
-static const bool Windowed = true;
+static const std::string fullScreenString = "Start fullscreen?";
+static const std::string fullScreenProblemString = "FullScreen problem. Start in window?";
+static const std::string wndClassName = "windowClass";
+static const std::string appName = "пиу-пиу";
+static const int windowWidth = 800;
+static const int windowHeight = 600;
+static const bool windowed = true;
 #define BITZ 32
 
 window_facade::WindowFacade* window_facade::WindowFacade::getInstance() {
@@ -19,12 +19,12 @@ window_facade::WindowFacade* window_facade::WindowFacade::getInstance() {
 }
 window_facade::WindowFacade::WindowFacade() {
   id = command_manager::ID::WINDOW_FACADE;
-  _name = AppName;
-  _wndClassName = WndClassName;
-  _width = WindowWidth;
-  _height = WindowHeight;
+  _name = appName;
+  _wndClassName = wndClassName;
+  _width = windowWidth;
+  _height = windowHeight;
   _hwnd = NULL;
-  _fullscreen = !Windowed;
+  _fullscreen = !windowed;
   _minimized = false;
 }
 void window_facade::WindowFacade::set(command_manager::Command& c) {
@@ -37,33 +37,21 @@ void window_facade::WindowFacade::stop() {
   this->willStop = true;
 }
 void window_facade::WindowFacade::processCommand(command_manager::Command& c) {
-  /**
-  * windowFacade no recieve commands
-  */
-
+  using command_manager::CommandType;
+  switch (c.commandType) {
+  case CommandType::PAUSE: cout << "WindowFacade pause"; break;
+  case CommandType::RESUME: cout << "WindowFacade resume"; break;
+  default: break;
+  }
   return;
 }
 void window_facade::WindowFacade::start() {
   cout << "WindowFacade thread was started\n";
-  getInstance()->_generateCommandProcessors();
   if (!_initialize()) {
-    command_manager::Command cmd = command_manager::Command(
-      command_manager::ID::WINDOW_FACADE, command_manager::ID::THREAD_MANAGER,
-      command_manager::CommandType::KILL);
-    set(cmd);
+    _sendKill();
     return;
   }
-  command_manager::Command hwndToGraphic = command_manager::Command(
-    command_manager::ID::WINDOW_FACADE, command_manager::ID::GRAPHIC,
-    command_manager::CommandType::INITIALIZE);
-  hwndToGraphic.args[0] = reinterpret_cast<int>(_hwnd);
-  set(hwndToGraphic);
-  
-  command_manager::Command hwndToIO = command_manager::Command(
-    command_manager::ID::WINDOW_FACADE, command_manager::ID::IO,
-    command_manager::CommandType::INITIALIZE);
-  hwndToIO.args[0] = reinterpret_cast<int>(_hwnd);
-  set(hwndToIO);
+  _sendHwnd();
 
   MSG msg_;
 
@@ -79,7 +67,7 @@ void window_facade::WindowFacade::start() {
   }
 }
 void window_facade::WindowFacade::_generateCommandProcessors() {
-  _commandProcessors[WM_CLOSE] = [](WPARAM	wParam, LPARAM	lParam) {
+  _commandProcessors[WM_CLOSE] = [](WPARAM wParam, LPARAM lParam) {
     command_manager::Command commandKill = command_manager::Command(
         command_manager::ID::WINDOW_FACADE,
         command_manager::ID::THREAD_MANAGER,
@@ -87,7 +75,7 @@ void window_facade::WindowFacade::_generateCommandProcessors() {
     WindowFacade::getInstance()->set(commandKill);
     return true;
   };
-  _commandProcessors[WM_SIZE] = [](WPARAM	wParam, LPARAM	lParam) {
+  _commandProcessors[WM_SIZE] = [](WPARAM wParam, LPARAM lParam) {
     command_manager::Command commandResize = command_manager::Command(
       command_manager::ID::WINDOW_FACADE,
       command_manager::ID::GRAPHIC,
@@ -97,7 +85,7 @@ void window_facade::WindowFacade::_generateCommandProcessors() {
     WindowFacade::getInstance()->set(commandResize);
     return true;
   }; 
-  _commandProcessors[WM_SYSCOMMAND] = [](WPARAM	wParam, LPARAM	lParam) {
+  _commandProcessors[WM_SYSCOMMAND] = [](WPARAM wParam, LPARAM lParam) {
     command_manager::Command commandActive = command_manager::Command(
       command_manager::ID::WINDOW_FACADE,
       command_manager::ID::THREAD_MANAGER);
@@ -106,11 +94,10 @@ void window_facade::WindowFacade::_generateCommandProcessors() {
       WindowFacade::getInstance()->setMinimized(true);
       commandActive.commandType = command_manager::CommandType::PAUSE;
       break;
-    case 1:   // Развёрнуто, этот ID я просто отловил, надо поискать дефайн к нему
+    case 1:   // When activated from minimize
       WindowFacade::getInstance()->setMinimized(false);
       commandActive.commandType = command_manager::CommandType::RESUME;
       break;
-      // не уходим в сон и отдых
     case SC_SCREENSAVE:
     case SC_MONITORPOWER: return true;
     default: return false;
@@ -118,7 +105,7 @@ void window_facade::WindowFacade::_generateCommandProcessors() {
     WindowFacade::getInstance()->set(commandActive);
     return false;
   };
-  _commandProcessors[WM_ACTIVATE] = [](WPARAM	wParam, LPARAM	lParam) {
+  _commandProcessors[WM_ACTIVATE] = [](WPARAM wParam, LPARAM lParam) {
     if (!WindowFacade::getInstance()->getMinimized()) {
       command_manager::Command commandActive = command_manager::Command(
         command_manager::ID::WINDOW_FACADE,
@@ -130,23 +117,22 @@ void window_facade::WindowFacade::_generateCommandProcessors() {
     }
     return false;
   };
-  
 }
 bool window_facade::WindowFacade::_initialize() {
+  getInstance()->_generateCommandProcessors();
+
   HINSTANCE hInstance_ = GetModuleHandle(NULL);
 
   DWORD		dwExStyle_;
   DWORD		dwStyle_;
   RECT		windowRect_;
 
-  if (!Windowed) {
-    if (MessageBox(NULL, FullScreenString.c_str(), FullScreenString.c_str(), MB_YESNO | MB_ICONQUESTION) == IDYES) {
-      _fullscreen = true;
-      HDC hDC_ = GetDC(NULL);
-      _width = GetDeviceCaps(hDC_, HORZRES);
-      _height = GetDeviceCaps(hDC_, VERTRES);
-      ReleaseDC(NULL, hDC_);
-    }
+  if (MessageBox(NULL, fullScreenString.c_str(), fullScreenString.c_str(), MB_YESNO | MB_ICONQUESTION) == IDYES) {
+    _fullscreen = true;
+    HDC hDC_ = GetDC(NULL);
+    _width = GetDeviceCaps(hDC_, HORZRES);
+    _height = GetDeviceCaps(hDC_, VERTRES);
+    ReleaseDC(NULL, hDC_);
   }
 
   windowRect_.left = (long)0;
@@ -154,7 +140,7 @@ bool window_facade::WindowFacade::_initialize() {
   windowRect_.top = (long)0;
   windowRect_.bottom = (long)_height;
 
-  WNDPROC wndproc_ = [](HWND  hWnd, UINT	uMsg, WPARAM	wParam, LPARAM	lParam)->LRESULT {
+  WNDPROC wndproc_ = [](HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)->LRESULT {
     auto& cp = window_facade::WindowFacade::getInstance()->_commandProcessors;
     auto& it = cp.find(uMsg);
     if (it != cp.end()) {
@@ -176,7 +162,7 @@ bool window_facade::WindowFacade::_initialize() {
   wc_.lpszClassName = _wndClassName.c_str();
 
   if (!RegisterClass(&wc_)) {
-    //errorMessage = ErrorMessages::registerWindowClass;
+    // TODO: Log error
     return false;
   }
   if (_fullscreen) {
@@ -190,15 +176,15 @@ bool window_facade::WindowFacade::_initialize() {
 
     // Try To Set Selected Mode And Get Results.  NOTE: CDS_FULLSCREEN Gets Rid Of Start Bar.
     if (ChangeDisplaySettings(&dmScreenSettings_, CDS_FULLSCREEN) != DISP_CHANGE_SUCCESSFUL) {
-      if (MessageBox(NULL, FullScreenProblemString.c_str(), FullScreenProblemString.c_str(), MB_YESNO | MB_ICONEXCLAMATION) == IDYES) {
+      if (MessageBox(NULL, fullScreenProblemString.c_str(), fullScreenProblemString.c_str(), MB_YESNO | MB_ICONEXCLAMATION) == IDYES) {
         _fullscreen = false;
-        _width = WindowWidth;
-        _height = WindowHeight;
+        _width = windowWidth;
+        _height = windowHeight;
         windowRect_.right = (long)_width;
         windowRect_.bottom = (long)_height;
       }
       else {
-        //errorMessage = ErrorMessages::programClose;
+        // TODO: Log error
         return false;
       }
     }
@@ -227,7 +213,7 @@ bool window_facade::WindowFacade::_initialize() {
     hInstance_,
     NULL))) {
     _shutdown();
-    //errorMessage = ErrorMessages::windowCreate;
+    // TODO: Log error
     return false;
   }
 
@@ -243,11 +229,11 @@ void window_facade::WindowFacade::_shutdown() {
     ShowCursor(false);
   }
   if (_hwnd && !DestroyWindow(_hwnd)) {
-    //MessageBox(NULL, ErrorMessages::realeseHWND.c_str(), ErrorMessages::default.c_str(), MB_OK | MB_ICONINFORMATION);
+    // TODO: Log error
     _hwnd = NULL;
   }
   if (!UnregisterClass(_wndClassName.c_str(), GetModuleHandle(NULL))) {
-    //MessageBox(NULL, ErrorMessages::unregisterClass.c_str(), ErrorMessages::default.c_str(), MB_OK | MB_ICONINFORMATION);
+    // TODO: Log error
   }
 }
 void window_facade::WindowFacade::setMinimized(bool minimized) {
@@ -255,4 +241,23 @@ void window_facade::WindowFacade::setMinimized(bool minimized) {
 }
 bool window_facade::WindowFacade::getMinimized() {
   return _minimized;
+}
+void window_facade::WindowFacade::_sendKill() {
+  command_manager::Command cmd = command_manager::Command(
+    command_manager::ID::WINDOW_FACADE, command_manager::ID::THREAD_MANAGER,
+    command_manager::CommandType::KILL);
+  set(cmd);
+}
+void window_facade::WindowFacade::_sendHwnd() {
+  command_manager::Command hwndToGraphic = command_manager::Command(
+    command_manager::ID::WINDOW_FACADE, command_manager::ID::GRAPHIC,
+    command_manager::CommandType::INITIALIZE);
+  hwndToGraphic.args[0] = reinterpret_cast<int>(_hwnd);
+  set(hwndToGraphic);
+
+  command_manager::Command hwndToIO = command_manager::Command(
+    command_manager::ID::WINDOW_FACADE, command_manager::ID::IO,
+    command_manager::CommandType::INITIALIZE);
+  hwndToIO.args[0] = reinterpret_cast<int>(_hwnd);
+  set(hwndToIO);
 }

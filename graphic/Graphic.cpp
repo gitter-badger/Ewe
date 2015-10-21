@@ -17,14 +17,14 @@ void graphic::Graphic::stop() {
 }
 
 void graphic::Graphic::processCommand (command_manager::Command& c) {
-  /**
-   * Graphic no recieve commands
-   */
-  if (c.commandType == command_manager::CommandType::INITIALIZE) cout << "Graphic init\thwnd = " << c.args[0] << "\n";
-  if (c.commandType == command_manager::CommandType::PAUSE) cout << "Graphic pause";
-  if (c.commandType == command_manager::CommandType::RESUME) cout << "Graphic resume";
-  if (c.commandType == command_manager::CommandType::RESIZE) cout << "Graphic resize\tx = " << c.args[0] << " y = " << c.args[1] << "\n";
-
+  using command_manager::CommandType;
+  switch (c.commandType) { 
+  case CommandType::INITIALIZE: cout << "Graphic init\thwnd = " << c.args[0] << "\n"; break;
+  case CommandType::PAUSE: cout << "Graphic pause"; break;
+  case CommandType::RESUME: cout << "Graphic resume"; break;
+  case CommandType::RESIZE: cout << "Graphic resize\tx = " << c.args[0] << " y = " << c.args[1] << "\n"; break;
+  default: break;
+  }
   return;
 }
 

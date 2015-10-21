@@ -9,6 +9,12 @@ sound::Sound::Sound() {
 }
 
 void sound::Sound::processCommand (command_manager::Command& c) {
+  using command_manager::CommandType;
+  switch (c.commandType) {
+  case CommandType::PAUSE: cout << "Sound pause"; break;
+  case CommandType::RESUME: cout << "Sound resume"; break;
+  default: break;
+  }
   return;
 }
 

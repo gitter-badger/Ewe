@@ -5,6 +5,12 @@
 using std::cout;
 
 void io::IO::processCommand (command_manager::Command& c) {
+  using command_manager::CommandType;
+  switch (c.commandType) {
+  case CommandType::PAUSE: cout << "IO pause"; break;
+  case CommandType::RESUME: cout << "IO resume"; break;
+  default: break;
+  }
   return;
 }
 

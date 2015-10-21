@@ -9,6 +9,12 @@ logic::Logic::Logic() {
 }
 
 void logic::Logic::processCommand (command_manager::Command& c) {
+  using command_manager::CommandType;
+  switch (c.commandType) {
+  case CommandType::PAUSE: cout << "Logic pause"; break;
+  case CommandType::RESUME: cout << "Logic resume"; break;
+  default: break;
+  }
   return;
 }
 
