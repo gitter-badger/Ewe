@@ -1,5 +1,7 @@
 #include "ThreadManager.h"
 
+static const int threadManagerSleep = 100;
+
 thread_manager::ThreadSubject::ThreadSubject() { 
   this->commands_ = std::make_shared<std::queue<command_manager::Command>>();
   this->willStop = false;
@@ -20,10 +22,6 @@ std::shared_ptr<std::queue<command_manager::Command>> thread_manager::ThreadSubj
   return this->commands_;
 }
 
-command_manager::ID thread_manager::ThreadSubject::getId () {
-  return this->id;
-}
-
 thread_manager::ThreadManager::ThreadManager ( ) {
   this->commands_ = std::make_shared<std::queue<command_manager::Command>>();
   this->commandManager_.addQueue (
@@ -36,7 +34,7 @@ void thread_manager::ThreadManager::add(ThreadSubject * tc) {
   tc->bind(&commandManager_);
   
   this->subjects_.push_back (tc);
-  this->commandManager_.addQueue (tc->getId ( ), tc->getQueueLink ( ));
+  this->commandManager_.addQueue (tc->id ( ), tc->getQueueLink ( ));
 }
 
 void thread_manager::ThreadManager::start ( ) {
@@ -54,7 +52,7 @@ void thread_manager::ThreadManager::stop() {
 
 void thread_manager::ThreadManager::listen ( ) {
   while (true) {
-    auto a = std::chrono::milliseconds (100);
+    auto a = std::chrono::milliseconds(threadManagerSleep);
     std::this_thread::sleep_for (a);
 
     commandManager_.process ();

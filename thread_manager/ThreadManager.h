@@ -14,7 +14,6 @@ protected:
   command_manager::CommandManager* commandManager_;
 
   std::shared_ptr<std::queue<command_manager::Command>> commands_;
-  command_manager::ID id;
   void processCommands ( );
   virtual void processCommand (command_manager::Command& c) = 0;
 
@@ -23,7 +22,7 @@ public:
   ThreadSubject();
 
   std::shared_ptr<std::queue<command_manager::Command>> getQueueLink ();
-  command_manager::ID getId ( );
+  virtual command_manager::ID id() = 0;
   
   virtual void stop ( ) = 0;
   virtual void start ( ) = 0;

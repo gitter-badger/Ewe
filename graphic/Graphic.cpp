@@ -5,9 +5,13 @@
 #include <CommandManager.h>
 
 using std::cout;
+static const int graphicSleep = 100;
+
+command_manager::ID graphic::Graphic::id() {
+  return command_manager::ID::GRAPHIC;
+}
 
 graphic::Graphic::Graphic ( ) {
-  id = command_manager::ID::GRAPHIC;
 }
 
 void graphic::Graphic::stop() {
@@ -32,7 +36,7 @@ void graphic::Graphic::start() {
   cout << "Graphic thread was started\n";
 
   while (!this->willStop) {
-    auto a = std::chrono::milliseconds (100);
+    auto a = std::chrono::milliseconds(graphicSleep);
     std::this_thread::sleep_for (a);
 
     processCommands ( );

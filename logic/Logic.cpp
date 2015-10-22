@@ -3,9 +3,13 @@
 #include <iostream>
 
 using std::cout;
+static const int logicSleep = 100;
+
+command_manager::ID logic::Logic::id() {
+  return command_manager::ID::LOGIC;
+}
 
 logic::Logic::Logic() {
-  id = command_manager::ID::LOGIC;
 }
 
 void logic::Logic::processCommand (command_manager::Command& c) {
@@ -28,7 +32,7 @@ void logic::Logic::start() {
   cout << "Logic thread was started\n";
 
   while (!this->willStop) {
-    auto a = std::chrono::milliseconds (100);
+    auto a = std::chrono::milliseconds(logicSleep);
     std::this_thread::sleep_for (a);
 
     processCommands ();

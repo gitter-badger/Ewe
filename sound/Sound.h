@@ -10,6 +10,7 @@ namespace sound {
 class Sound : public thread_manager::ThreadSubject {
   void processCommand (command_manager::Command& c);
 public:
+  command_manager::ID id();
   sound::Sound::Sound();
 
   void stop();
