@@ -11,18 +11,21 @@ namespace command_manager {
     IO,
     LOGIC,
     SOUND,
-    THREAD_MANAGER
+    THREAD_MANAGER,
+    WINDOW_FACADE
   };
 
   enum CommandType {
     KILL,
     PAUSE,
-    ACTION,
-    PLAY
+    RESUME,
+    INITIALIZE,
+    RESIZE
   };
 
   class Command {
   public:
+    Command(ID from_, ID to_, CommandType commandType_) :from(from_), to(to_), commandType(commandType_) { args[0] = args[1] = args[2] = 0; };
     ID from, to;
     CommandType commandType;
     int args [3];

@@ -3,8 +3,22 @@
 #include <iostream>
 
 using std::cout;
+static const int soundSleep = 100;
+
+command_manager::ID sound::Sound::id() {
+  return command_manager::ID::SOUND;
+}
+
+sound::Sound::Sound() {
+}
 
 void sound::Sound::processCommand (command_manager::Command& c) {
+  using command_manager::CommandType;
+  switch (c.commandType) {
+  case CommandType::PAUSE: cout << "Sound pause"; break;
+  case CommandType::RESUME: cout << "Sound resume"; break;
+  default: break;
+  }
   return;
 }
 
@@ -18,10 +32,8 @@ void sound::Sound::start() {
   cout << "Sound thread was started\n";
 
   while (!this->willStop) {
-    auto a = std::chrono::milliseconds (100);
+    auto a = std::chrono::milliseconds(soundSleep);
     std::this_thread::sleep_for (a);
-
-    cout << "Sound thread was started\n";
 
     processCommands ();
   }

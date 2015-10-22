@@ -5,7 +5,7 @@ void command_manager::CommandManager::addQueue (command_manager::ID id, std::sha
 }
 
 void command_manager::CommandManager::push (command_manager::Command& a) {
-  this->commands_.push (a);
+  this->commands_.push(a);
 }
 
 void command_manager::CommandManager::process () {
