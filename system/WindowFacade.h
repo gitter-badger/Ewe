@@ -9,18 +9,19 @@ namespace window_facade {
   class WindowFacade : public thread_manager::ThreadSubject {
     void processCommand(command_manager::Command& c);
   public:
+    static WindowFacade* getInstance();
     command_manager::ID id();
-    void set(command_manager::Command& c);
     void stop();
     void start();
-    static WindowFacade* getInstance();
-    void setMinimized(bool);
-    bool getMinimized();
-    void sendPause();
-    void sendResume();
-    void sendKill();
-    void sendResize(int,int);
-    void sendHwnd();
+
+    // This methods only for self call! WndProc hack
+    // pp_ prefix means pseudoprivate
+    void pp_setMinimized(bool);
+    bool pp_getMinimized();
+    void pp_sendPause();
+    void pp_sendResume();
+    void pp_sendKill();
+    void pp_sendResize(int, int);
 
   private:
     WindowFacade();
@@ -28,6 +29,8 @@ namespace window_facade {
     void _generateCommandProcessors();
 
   private:
+    void _sendHwnd();
+    void _send(command_manager::Command& c);
     bool _initialize();
     void _shutdown();
 

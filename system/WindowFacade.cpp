@@ -30,7 +30,7 @@ window_facade::WindowFacade::WindowFacade() {
   _fullscreen = !windowed;
   _minimized = false;
 }
-void window_facade::WindowFacade::set(command_manager::Command& c) {
+void window_facade::WindowFacade::_send(command_manager::Command& c) {
   commandManager_->push(c);
 }
 void window_facade::WindowFacade::stop() {
@@ -51,10 +51,10 @@ void window_facade::WindowFacade::processCommand(command_manager::Command& c) {
 void window_facade::WindowFacade::start() {
   cout << "WindowFacade thread was started\n";
   if (!_initialize()) {
-    sendKill();
+    pp_sendKill();
     return;
   }
-  sendHwnd();
+  _sendHwnd();
 
   MSG msg_;
 
@@ -71,22 +71,22 @@ void window_facade::WindowFacade::start() {
 }
 void window_facade::WindowFacade::_generateCommandProcessors() {
   _commandProcessors[WM_CLOSE] = [](WPARAM wParam, LPARAM lParam) {
-    WindowFacade::getInstance()->sendKill();
+    WindowFacade::getInstance()->pp_sendKill();
     return true;
   };
   _commandProcessors[WM_SIZE] = [](WPARAM wParam, LPARAM lParam) {
-    WindowFacade::getInstance()->sendResize(LOWORD(lParam), HIWORD(lParam));
+    WindowFacade::getInstance()->pp_sendResize(LOWORD(lParam), HIWORD(lParam));
     return true;
   }; 
   _commandProcessors[WM_SYSCOMMAND] = [](WPARAM wParam, LPARAM lParam) {
     switch (wParam)  {
     case SC_MINIMIZE:
-      WindowFacade::getInstance()->setMinimized(true);
-      WindowFacade::getInstance()->sendPause();
+      WindowFacade::getInstance()->pp_setMinimized(true);
+      WindowFacade::getInstance()->pp_sendPause();
       break;
     case 1:   // When activated from minimize
-      WindowFacade::getInstance()->setMinimized(false);
-      WindowFacade::getInstance()->sendResume();
+      WindowFacade::getInstance()->pp_setMinimized(false);
+      WindowFacade::getInstance()->pp_sendResume();
       break;
     case SC_SCREENSAVE:
     case SC_MONITORPOWER: return true;
@@ -95,9 +95,9 @@ void window_facade::WindowFacade::_generateCommandProcessors() {
     return false;
   };
   _commandProcessors[WM_ACTIVATE] = [](WPARAM wParam, LPARAM lParam) {
-    if (!WindowFacade::getInstance()->getMinimized()) {
-      if (wParam) WindowFacade::getInstance()->sendResume();
-      else        WindowFacade::getInstance()->sendPause();
+    if (!WindowFacade::getInstance()->pp_getMinimized()) {
+      if (wParam) WindowFacade::getInstance()->pp_sendResume();
+      else        WindowFacade::getInstance()->pp_sendPause();
       return true;
     }
     return false;
@@ -221,51 +221,51 @@ void window_facade::WindowFacade::_shutdown() {
     // TODO: Log error
   }
 }
-void window_facade::WindowFacade::setMinimized(bool minimized) {
+void window_facade::WindowFacade::pp_setMinimized(bool minimized) {
   _minimized = minimized;
 }
-bool window_facade::WindowFacade::getMinimized() {
+bool window_facade::WindowFacade::pp_getMinimized() {
   return _minimized;
 }
-void window_facade::WindowFacade::sendHwnd() {
+void window_facade::WindowFacade::_sendHwnd() {
   command_manager::Command hwndToGraphic = command_manager::Command(
     command_manager::ID::WINDOW_FACADE, command_manager::ID::GRAPHIC,
     command_manager::CommandType::INITIALIZE);
   hwndToGraphic.args[0] = reinterpret_cast<int>(_hwnd);
-  set(hwndToGraphic);
+  _send(hwndToGraphic);
 
   command_manager::Command hwndToIO = command_manager::Command(
     command_manager::ID::WINDOW_FACADE, command_manager::ID::IO,
     command_manager::CommandType::INITIALIZE);
   hwndToIO.args[0] = reinterpret_cast<int>(_hwnd);
-  set(hwndToIO);
+  _send(hwndToIO);
 }
-void window_facade::WindowFacade::sendPause() {
+void window_facade::WindowFacade::pp_sendPause() {
   command_manager::Command commandPause = command_manager::Command(
     command_manager::ID::WINDOW_FACADE,
     command_manager::ID::THREAD_MANAGER,
     command_manager::CommandType::RESUME);
-  set(commandPause);
+  _send(commandPause);
 }
-void window_facade::WindowFacade::sendResume() {
+void window_facade::WindowFacade::pp_sendResume() {
   command_manager::Command commandResume = command_manager::Command(
     command_manager::ID::WINDOW_FACADE,
     command_manager::ID::THREAD_MANAGER,
     command_manager::CommandType::RESUME);
-  set(commandResume);
+  _send(commandResume);
 }
-void window_facade::WindowFacade::sendKill() {
+void window_facade::WindowFacade::pp_sendKill() {
   command_manager::Command cmd = command_manager::Command(
     command_manager::ID::WINDOW_FACADE, command_manager::ID::THREAD_MANAGER,
     command_manager::CommandType::KILL);
-  set(cmd);
+  _send(cmd);
 }
-void window_facade::WindowFacade::sendResize(int width, int height) {
+void window_facade::WindowFacade::pp_sendResize(int width, int height) {
   command_manager::Command commandResize = command_manager::Command(
     command_manager::ID::WINDOW_FACADE,
     command_manager::ID::GRAPHIC,
     command_manager::CommandType::RESIZE);
   commandResize.args[0] = width;
   commandResize.args[1] = height;
-  set(commandResize);
+  _send(commandResize);
 }
